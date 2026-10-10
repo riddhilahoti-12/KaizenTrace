@@ -25,15 +25,31 @@ export class FixService {
     }
 
     const repoRoot = GitService.getRepoRoot();
+    const teamflowRoot = path.resolve(repoRoot, 'apps/teamflow');
     const targetFile = investigation.faultyFile || 'apps/teamflow/backend/src/middleware/auth.ts';
     const absolutePath = path.isAbsolute(targetFile) ? targetFile : path.resolve(repoRoot, targetFile);
 
-    console.log(`Applying targeted fix for incident ${incidentId} on ${absolutePath}`);
+    // Safeguard 1: Reject path traversal or targets outside TeamFlow
+    const normalizedTarget = path.normalize(absolutePath);
+    if (!normalizedTarget.startsWith(teamflowRoot)) {
+      throw new Error(`Security validation error: Target file ${targetFile} is outside the TeamFlow application boundaries.`);
+    }
+
+    console.log(`Applying targeted fix for incident ${incidentId} on ${normalizedTarget}`);
+
+    // Safeguard 2: Save recoverable backup copy before modifying
+    if (fs.existsSync(normalizedTarget)) {
+      try {
+        fs.copyFileSync(normalizedTarget, normalizedTarget + '.kaizen_backup');
+      } catch {
+        // Continue if backup cannot be written
+      }
+    }
 
     // If target is auth.ts (Scenario A: Permission Regression)
-    if (absolutePath.includes('auth.ts')) {
-      if (fs.existsSync(absolutePath)) {
-        let content = fs.readFileSync(absolutePath, 'utf-8');
+    if (normalizedTarget.includes('auth.ts')) {
+      if (fs.existsSync(normalizedTarget)) {
+        let content = fs.readFileSync(normalizedTarget, 'utf-8');
 
         // Restore clean check if corrupted or bypassed
         // Look for deliberate regression patterns:
