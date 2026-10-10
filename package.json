@@ -1,0 +1,30 @@
+{
+  "name": "kaizentrace-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "KaizenTrace - Evidence-Based Software Incident Investigation Tool with Integrated TeamFlow Demo Application",
+  "scripts": {
+    "dev": "concurrently -n \"tf-be,tf-fe,kt-be,kt-fe\" -c \"blue,cyan,green,yellow\" \"npm run dev:teamflow:backend\" \"npm run dev:teamflow:frontend\" \"npm run dev:kaizentrace:backend\" \"npm run dev:kaizentrace:frontend\"",
+    "dev:teamflow": "concurrently -n \"tf-be,tf-fe\" -c \"blue,cyan\" \"npm run dev:teamflow:backend\" \"npm run dev:teamflow:frontend\"",
+    "dev:teamflow:backend": "npm --prefix apps/teamflow/backend run dev",
+    "dev:teamflow:frontend": "npm --prefix apps/teamflow/frontend run dev",
+    "dev:kaizentrace": "concurrently -n \"kt-be,kt-fe\" -c \"green,yellow\" \"npm run dev:kaizentrace:backend\" \"npm run dev:kaizentrace:frontend\"",
+    "dev:kaizentrace:backend": "npm --prefix apps/kaizentrace/backend run dev",
+    "dev:kaizentrace:frontend": "npm --prefix apps/kaizentrace/frontend run dev",
+    "build": "npm --prefix apps/teamflow/backend run build && npm --prefix apps/teamflow/frontend run build && npm --prefix apps/kaizentrace/backend run build && npm --prefix apps/kaizentrace/frontend run build",
+    "test": "npm run test:teamflow && npm run test:kaizentrace",
+    "test:teamflow": "npm --prefix apps/teamflow/backend test",
+    "test:kaizentrace": "npm --prefix apps/kaizentrace/backend test"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "kaizentrace",
+    "teamflow",
+    "incident-investigation",
+    "root-cause-analysis"
+  ],
+  "author": "KaizenTrace",
+  "license": "ISC"
+}
