@@ -58,7 +58,7 @@ export const DashboardLayout: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-900 font-sans">
+    <div className="flex min-h-screen bg-white text-slate-900 font-sans">
       {/* Sidebar */}
       <Sidebar unreadNotificationCount={unreadCount} />
 
