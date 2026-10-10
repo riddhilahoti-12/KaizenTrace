@@ -191,8 +191,9 @@ export const DiagnosticRunsView: React.FC<DiagnosticRunsViewProps> = ({
                     </div>
                     <pre
                       style={{
-                        backgroundColor: '#1E293B',
-                        color: '#F8FAFC',
+                        backgroundColor: 'var(--bg-surface)',
+                        color: 'var(--text-primary)',
+                        border: '1px solid var(--border-color)',
                         borderRadius: 'var(--radius-sm)',
                         padding: '0.85rem',
                         fontSize: '0.725rem',

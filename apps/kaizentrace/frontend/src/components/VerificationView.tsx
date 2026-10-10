@@ -92,7 +92,19 @@ export const VerificationView: React.FC<VerificationViewProps> = ({ verification
           <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.3rem', textTransform: 'uppercase' }}>
             Verification Vitest Output Log
           </div>
-          <pre style={{ background: '#1e293b', color: '#f8fafc', padding: '0.75rem', borderRadius: '6px', fontSize: '0.725rem', maxHeight: '160px', overflowY: 'auto' }}>
+          <pre
+            style={{
+              backgroundColor: 'var(--bg-surface)',
+              color: 'var(--text-primary)',
+              border: '1px solid var(--border-color)',
+              padding: '0.75rem',
+              borderRadius: 'var(--radius-sm)',
+              fontSize: '0.725rem',
+              fontFamily: 'var(--font-mono)',
+              maxHeight: '160px',
+              overflowY: 'auto',
+            }}
+          >
             {latest.outputSnippet}
           </pre>
         </div>
