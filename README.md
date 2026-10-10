@@ -70,28 +70,45 @@ npm run dev:kaizentrace
 ### 4. Port Allocations
 | Service | Role | Local URL |
 | :--- | :--- | :--- |
-| **KaizenTrace Dashboard** | RCA & Incident Investigation UI | `http://localhost:5174` |
-| **KaizenTrace Backend** | Git Engine & Telemetry Collector | `http://localhost:5050` |
-| **TeamFlow Frontend** | Project Management App | `http://localhost:5173` |
-| **TeamFlow Backend** | Express REST API | `http://localhost:5000` |
+| **KaizenTrace Dashboard** | Enterprise Soft-Light RCA & Incident Investigation UI | `http://localhost:5174` |
+| **KaizenTrace Backend** | Git Engine, Telemetry Collector & Vitest Probe Runner | `http://localhost:5050` |
+| **TeamFlow Frontend** | Target Project Management Application | `http://localhost:5173` |
+| **TeamFlow Backend** | Express REST API (with In-Memory / Atlas Database) | `http://localhost:5000` |
+
+---
+
+## 🎨 Enterprise Soft-Light UI Design System
+
+KaizenTrace features a professional, light-only dashboard designed for engineering teams:
+- **Surface Palette**: Main Background `#F5F7FB`, Cards `#FFFFFF`, Secondary Surface `#EEF2F8`.
+- **Primary Interactive**: Professional Blue `#5276C7` with soft hover states.
+- **Analytical & Root Cause Accents**: Teal `#3C9C9A` and Soft Lavender `#8C83C7` / `#F0EEFB`.
+- **Status Indicators**: Verified Success `#27856A` / `#E8F5EF`, Warning `#B9822D` / `#FFF4DF`, Genuine Error `#C85C65` / `#FCECEF`.
+- **Application Shell**:
+  - **Sidebar Navigation**: Overview, Incidents, Investigations, Diagnostic Runs, Verification History, Demo Scenarios.
+  - **Top Navigation**: Live service status indicators (Port 5050, TeamFlow Port 5000, MongoDB Atlas / Local connection badge, Baseline Git commit).
+  - **Overview Dashboard**: 4 real metric cards, real-time diagnostic timeline, incident breakdown, and data tables.
+  - **Investigation Workspace**: Two-column layout with observed symptom, explainable rule-based hypothesis, file/line suspect link, syntax-highlighted unified Git diff viewer, and forensic evidence drawer.
+  - **Safe Fix & Live Verification**: Modal preview of proposed changes and automated Vitest verification execution with real status transitions.
 
 ---
 
 ## 🍃 MongoDB Atlas Configuration
 
-KaizenTrace supports MongoDB Atlas as well as an automatic embedded fallback for local testing.
+KaizenTrace persists all diagnostic runs, incidents, investigations, verification outcomes, telemetry events, and baseline commit history in MongoDB.
 
-1. Copy `.env.example` to `.env`:
-   ```powershell
-   cp .env.example .env
-   ```
-2. In `apps/kaizentrace/backend/.env`:
+### Atlas Setup Instructions:
+1. Create a cluster on [MongoDB Atlas](https://cloud.mongodb.com/).
+2. Under **Database Access**, create a user with read/write privileges on the `kaizentrace` database.
+3. Under **Network Access**, add your current IP address (or `0.0.0.0/0` for development).
+4. In `apps/kaizentrace/backend/.env`, configure your connection string:
    ```env
    PORT=5050
-   MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/kaizentrace?retryWrites=true&w=majority
+   NODE_ENV=development
+   MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-host>/kaizentrace?retryWrites=true&w=majority
+   TEAMFLOW_URL=http://localhost:5000
    ```
-3. If `MONGODB_URI` is omitted or set to `memory`, KaizenTrace automatically launches an embedded in-memory MongoDB instance and marks the status in the UI as:
-   `In-Memory Test Mode (Atlas Not Configured)`
+5. When valid Atlas credentials are provided, KaizenTrace connects directly and displays `MongoDB Atlas: Connected` in the header. If connected to a local MongoDB instance, it displays `MongoDB Local: Connected`. If Atlas is unreachable, it logs a clear connection error and does not silently fake success.
 
 ---
 

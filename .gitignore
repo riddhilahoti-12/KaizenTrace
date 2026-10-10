@@ -35,3 +35,5 @@ Thumbs.db
 # Temporary test artifacts
 scratch/
 temp/
+*.kaizen_backup
+*.backup

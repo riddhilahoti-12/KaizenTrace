@@ -65,8 +65,8 @@ export const ApplyFixModal: React.FC<ApplyFixModalProps> = ({
             <CodeDiff diffText={fix.patchContent} filePath={fix.targetFile} />
           </div>
 
-          <div style={{ backgroundColor: 'var(--color-primary-light)', padding: '0.75rem', borderRadius: '6px', fontSize: '0.8rem', color: '#0369a1' }}>
-            Applying this fix will safely update the target file and trigger regression verification. Unrelated modifications remain untouched.
+          <div style={{ backgroundColor: 'var(--color-primary-soft)', padding: '0.75rem', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem', color: 'var(--color-primary)' }}>
+            Applying this fix will safely update the target file and trigger regression verification. A backup is automatically retained.
           </div>
         </div>
 

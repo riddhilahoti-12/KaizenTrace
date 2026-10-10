@@ -62,6 +62,28 @@ export class ScenarioService {
     };
   }
 
+  static getScenarioStatus(): { scenarioA: boolean; scenarioB: boolean; scenarioC: boolean } {
+    const backendDir = this.getBackendDir();
+    const authPath = path.resolve(backendDir, 'src/middleware/auth.ts');
+    let scenarioA = false;
+    if (fs.existsSync(authPath)) {
+      const content = fs.readFileSync(authPath, 'utf-8');
+      scenarioA = content.includes('// REGRESSION_INJECTED');
+    }
+
+    const envPath = path.resolve(backendDir, '.env');
+    let scenarioB = false;
+    let scenarioC = false;
+    if (fs.existsSync(envPath)) {
+      const envContent = fs.readFileSync(envPath, 'utf-8');
+      if (envContent.includes('TEST_DISABLE_PERMISSIONS=true')) scenarioA = true;
+      if (envContent.includes('TEST_FAIL_TASK_UPDATE=true')) scenarioB = true;
+      if (envContent.includes('TEST_FAIL_DEADLINE_JOB=true')) scenarioC = true;
+    }
+
+    return { scenarioA, scenarioB, scenarioC };
+  }
+
   static resetAllScenarios(): { success: boolean; message: string } {
     const backendDir = this.getBackendDir();
 

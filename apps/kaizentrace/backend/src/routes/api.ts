@@ -177,6 +177,12 @@ router.post('/incidents/:id/verify', async (req: Request, res: Response) => {
   }
 });
 
+// Verifications
+router.get('/verifications', async (_req: Request, res: Response) => {
+  const verifications = await Verification.find().sort({ timestamp: -1 }).limit(50).lean();
+  res.json({ verifications });
+});
+
 // Run Diagnostics
 router.post('/diagnostics/run', async (req: Request, res: Response) => {
   try {
@@ -189,6 +195,11 @@ router.post('/diagnostics/run', async (req: Request, res: Response) => {
 });
 
 // Scenario controls
+router.get('/scenarios/status', async (_req: Request, res: Response) => {
+  const status = ScenarioService.getScenarioStatus();
+  res.json(status);
+});
+
 router.post('/scenarios/inject', async (req: Request, res: Response) => {
   const { scenario } = req.body;
   let result: any;

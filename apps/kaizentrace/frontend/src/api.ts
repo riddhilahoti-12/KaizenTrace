@@ -122,3 +122,20 @@ export async function fetchEvents(runId?: string): Promise<TelemetryEvent[]> {
   const data = await res.json();
   return data.events || [];
 }
+
+export async function fetchVerifications(): Promise<Verification[]> {
+  const res = await fetch(`${API_BASE}/verifications`);
+  if (!res.ok) return [];
+  const data = await res.json();
+  return data.verifications || [];
+}
+
+export async function fetchScenarioStatus(): Promise<{
+  scenarioA: boolean;
+  scenarioB: boolean;
+  scenarioC: boolean;
+}> {
+  const res = await fetch(`${API_BASE}/scenarios/status`);
+  if (!res.ok) return { scenarioA: false, scenarioB: false, scenarioC: false };
+  return res.json();
+}

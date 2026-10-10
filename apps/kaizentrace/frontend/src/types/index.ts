@@ -36,6 +36,9 @@ export interface Run {
   failedCount: number;
   durationMs: number;
   summary: string;
+  testFilter?: string;
+  outputSnippet?: string;
+  exitCode?: number;
   metadata?: {
     exitCode?: number;
     stdoutSnippet?: string;

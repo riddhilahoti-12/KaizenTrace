@@ -9,14 +9,14 @@ interface CodeDiffProps {
 export const CodeDiff: React.FC<CodeDiffProps> = ({ diffText, filePath }) => {
   if (!diffText || !diffText.trim()) {
     return (
-      <div className="diff-box">
+      <div className="diff-container">
         <div className="diff-header">
           <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <FileCode size={14} />
+            <FileCode size={13} />
             {filePath || 'No changes detected'}
           </span>
         </div>
-        <div className="diff-line" style={{ color: 'var(--text-muted)', padding: '1rem' }}>
+        <div className="diff-line" style={{ color: 'var(--text-secondary)', padding: '1rem' }}>
           No modified lines recorded in this diff hunk against baseline.
         </div>
       </div>
@@ -26,23 +26,21 @@ export const CodeDiff: React.FC<CodeDiffProps> = ({ diffText, filePath }) => {
   const lines = diffText.split('\n');
 
   return (
-    <div className="diff-box">
+    <div className="diff-container">
       <div className="diff-header">
         <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }}>
-          <FileCode size={14} />
+          <FileCode size={13} />
           {filePath || 'Source Code Inspection'}
         </span>
-        <span>Unified Git Diff</span>
+        <span style={{ fontSize: '0.7rem' }}>Unified Git Diff</span>
       </div>
-      <div style={{ maxHeight: '280px', overflowY: 'auto', backgroundColor: '#ffffff' }}>
+      <div className="diff-body">
         {lines.map((line, idx) => {
           let lineClass = 'diff-line';
           if (line.startsWith('+') && !line.startsWith('+++')) {
-            lineClass += ' diff-add';
+            lineClass += ' diff-line-add';
           } else if (line.startsWith('-') && !line.startsWith('---')) {
-            lineClass += ' diff-remove';
-          } else if (line.startsWith('@@')) {
-            lineClass += ' diff-hunk';
+            lineClass += ' diff-line-del';
           }
 
           return (
